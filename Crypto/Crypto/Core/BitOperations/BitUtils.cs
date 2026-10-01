@@ -29,10 +29,11 @@ namespace Crypto.Core.BitOperations
                 throw new ArgumentOutOfRangeException(nameof(logicalIndex));
 
             int ind = logicalIndex - startBitNumber;
-            int ibyte = ind / 8;
-            int ibit = ind % 8;
 
-            if (indexing == BitIndexing.FromMsb) ibit = 7 - ibit;
+            if (indexing == BitIndexing.FromMsb) ind = data.Length * 8 - 1 - ind;
+
+            int ibyte = data.Length - 1 - ind / 8;
+            int ibit = ind % 8;
 
             return data[ibyte] >> ibit & 1;
         }
@@ -49,11 +50,13 @@ namespace Crypto.Core.BitOperations
 
             if (GetBit(data, logicalIndex, indexing, startBitNumber) == val) return;
 
-            int ind = logicalIndex - startBitNumber;
-            int ibyte = ind / 8;
-            int ibit = ind % 8;
 
-            if (indexing == BitIndexing.FromMsb) ibit = 7 - ibit;
+            int ind = logicalIndex - startBitNumber;
+
+            if (indexing == BitIndexing.FromMsb) ind = data.Length * 8 - 1 - ind;
+
+            int ibyte = data.Length - 1 - ind / 8;
+            int ibit = ind % 8;
 
             data[ibyte] ^= (byte)(1 << ibit);
         }

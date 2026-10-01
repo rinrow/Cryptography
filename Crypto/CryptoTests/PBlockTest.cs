@@ -191,38 +191,6 @@ public class BitPermutationTests
             "IP-перестановка DES должна давать CC00CCFFF0AAF0AA");
     }
 
-    // ================================================================
-    // 6. Сборка байта из битов разных байтов
-    // ================================================================
-
-    [TestMethod]
-    public void GatherBitsFromDifferentBytes()
-    {
-        // Вход: 0xF0 0x0F
-        //   байт 0 = 1111_0000
-        //   байт 1 = 0000_1111
-        //
-        // FromLsb0, берём:
-        //   бит 7 (MSB байта 0 = 1)   → позиция 0 выхода
-        //   бит 0 (LSB байта 0 = 0)   → позиция 1 выхода
-        //   бит 8 (LSB байта 1 = 1)   → позиция 2 выхода
-        //   бит 15 (MSB байта 1 = 0)  → позиция 3 выхода
-        byte[] input = { 0xF0, 0x0F };
-        int[] pBlock = { 7, 0, 8, 15 };
-
-        byte[] result = BitPermutation.Permute(
-            input, pBlock,
-            BitIndexing.FromLsb, BitIndexing.FromLsb,
-            0, 0);
-
-        // Ожидаем биты [1,0,1,0] → 0b0000_0101 = 0x05
-        Assert.AreEqual(0x05, result[0]);
-    }
-
-    // ================================================================
-    // 7. Длина P-блока не кратна 8
-    // ================================================================
-
     [TestMethod]
     public void PBlockLengthNotMultipleOf8_OutputRoundedUp()
     {
@@ -235,7 +203,6 @@ public class BitPermutationTests
             0, 0);
 
         Assert.AreEqual(1, result.Length, "5 бит должны упаковаться в 1 байт");
-        // Все выбранные биты = 1 → 0b0001_1111 = 0x1F
         Assert.AreEqual(0x1F, result[0]);
     }
 

@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="Crypto/Crypto.csproj" />
+  <Project Path="CryptoDemo/CryptoDemo.csproj" Id="17431fd4-4f56-41b6-8bde-49924b148645" />
   <Project Path="CryptoTests/CryptoTests.csproj" Id="a9d1cb4a-4d67-4306-8d3a-bbb8e16b3986" />
 </Solution>

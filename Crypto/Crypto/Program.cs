@@ -1,5 +1,9 @@
-﻿using System;
-using Crypto.Core.BitOperations;
+﻿using Crypto.Core.BitOperations;
+using Crypto.DES;
+using System;
+using System.Collections.Specialized;
+
+// TODO чтение из файла не полностью(блоками)
 
 class Program
 {
@@ -17,19 +21,16 @@ class Program
 
     static void Main()
     {
+        var f = new DesRoundFunction();
 
+        byte[] r0 = { 0xF0, 0xAA, 0xF0, 0xAA };
+        byte[] k1 = { 0x1B, 0x02, 0xEF, 0xFC, 0x70, 0x72 };
 
-        // Таблица IP из FIPS PUB 46-3 — номера битов от 1 до 64, отсчёт от старшего бита.
-
-        byte[] input = { 1, 1, 1, 1, 1, 1, 1, 1 }; // 8 байт
-        byte[] permuted = BitPermutation.Permute(
-            input,
-            IP,
-            inIndexing: BitIndexing.FromMsb,
-            outIndexing: BitIndexing.FromMsb,
-            inStartBitNumber: 1,
-            outStartBitNumber: 1);
-            
-        foreach (byte b in permuted) Console.WriteLine(b);
+        byte[] result = f.Transform(r0, k1);
+        byte[] tar = new byte[] { 0x23, 0x4A, 0xA9, 0xBB };
+        for (int i = 0; i < 4; i++)
+        {
+            Console.WriteLine($"{result[i]} <=> {tar[i]}");
+        }
     }
 }
